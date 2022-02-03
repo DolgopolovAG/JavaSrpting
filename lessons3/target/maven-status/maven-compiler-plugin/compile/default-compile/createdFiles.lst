@@ -1,0 +1,7 @@
+lesson3\repository\ProductRepository.class
+lesson3\service\ProductService.class
+lesson3\config\WebConfig.class
+lesson3\entity\Product.class
+lesson3\config\MyConfiguration.class
+lesson3\entity\Product$ProductBuilder.class
+lesson3\controller\ProductController.class
