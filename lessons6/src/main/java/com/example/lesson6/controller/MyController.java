@@ -9,12 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/product")
 public class MyController {
-
-    //private final ProductProps productProps;
 
     private final ProductService productService;
 
@@ -23,6 +23,7 @@ public class MyController {
     public String showForm(Model model){
         System.out.println("create");
         Product product = new Product();
+        product.setManuf_Id(1L);
         model.addAttribute("product", product);
         return "create-product";
     }
@@ -32,9 +33,9 @@ public class MyController {
     public String processForm(Product product) {
         System.out.println("create Post");
         if (product.getId() == null) {
-            productService.save(product);
-        } else {
             productService.edit(product);
+        } else {
+            productService.save(product);
         }
         return "redirect:/product/all";
     }
@@ -42,7 +43,7 @@ public class MyController {
     // показать один элемент
     @GetMapping(path = "/{id}") //http://localhost:8080/product/{id}
     public String getProductById(Model model,
-                                 @PathVariable Integer id) {
+                                 @PathVariable Long id) {
         System.out.println("getProductById");
         Product product = productService.findById(id);
 
@@ -54,20 +55,22 @@ public class MyController {
     @GetMapping(path = "/all")
     public String getAllProduct(Model model){
         System.out.println("all");
-        model.addAttribute("products", productService.findAll());
+        List<Product> all = productService.findAll();
+        model.addAttribute("products", all);
+
         return "product-list";
     }
 
     // удалить элемент /product/delete/{id}
     @GetMapping(path = "/delete")
-    public String deleteById(@RequestParam Integer id) {
+    public String deleteById(@RequestParam Long id) {
         System.out.println("delete");
         productService.deleteById(id);
         return "redirect:/product/all";
     }
 
     @GetMapping(path = "/edit")
-    public String editById(Model model, @RequestParam Integer id) {
+    public String editById(Model model, @RequestParam Long id) {
         System.out.println("edit");
         Product pr = productService.findById(id);
         model.addAttribute("product",pr);
@@ -97,7 +100,7 @@ public class MyController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public String handleRuntimeExc(RuntimeException e) {
-        return  "Error!!!: " + e.getMessage();
+        return  "Error!!! message: " + e.getMessage() + "\\r\\n" + e.getStackTrace();
     }
 
 }

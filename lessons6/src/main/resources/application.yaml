@@ -2,18 +2,8 @@ spring.mvc.view:
   prefix: '/WEB-INF/view/'
   suffix: '.jsp'
 
-shop:
-  properties:
-    products:
-      - product:
-        id: 0
-        name: 'Product1'
-        price: 50.0
-      - product:
-        id: 1
-        name: 'Product2'
-        price: 60.0
-      - product:
-        id: 2
-        name: 'Product3'
-        price: 70.0
+hibernate.properties:
+  driverClassName: 'org.postgresql.Driver'
+  url: 'jdbc:postgresql://10.3.0.182:5432/gb_shop'
+  username: 'gb_shop'
+  password: 'gb_shop'

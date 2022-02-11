@@ -16,9 +16,13 @@
 <%--@elvariable id="product" type="lesson3.entity.Product"--%>
 <form:form action="create" modelAttribute="product">
     <form:hidden path="id" value ="${product.id}"/>
-    Name: <form:input path="name"/>
+    Name: <form:input path="title"/>
     <br>
-    Price: <form:input path="price"/>
+    Price: <form:input path="cost"/>
+    <br>
+    Date: <form:input path="date"/>
+    <br>
+    Manuf Id: <form:input path="manuf_Id"/>
     <br>
     <input type="submit" value="Save"/>
 </form:form>
