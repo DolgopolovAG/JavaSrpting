@@ -13,8 +13,10 @@
 </head>
 <body>
 <h2>Product id: ${product.id}</h2>
-<h2>Product name: ${product.name}</h2>
-<h2>Product price: ${product.price}</h2>
+<h2>Product name: ${product.title}</h2>
+<h2>Product price: ${product.cost}</h2>
+<h2>Product manufacture_date: ${product.date}</h2>
+<h2>Product manufacture_id: ${product.manuf_Id}</h2>
 
 <c:url var = "deleteUrl" value="/product/delete">
     <c:param name="id" value="${product.id}"/>
@@ -30,3 +32,4 @@
 
 </body>
 </html>
+

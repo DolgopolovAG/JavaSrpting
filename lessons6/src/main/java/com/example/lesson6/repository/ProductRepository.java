@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+//@Component
 @Getter
 @Setter
-@ConfigurationProperties("shop.properties")
+//@ConfigurationProperties("shop.properties")
 public class ProductRepository {
 
     List<Product> products;//= new ArrayList<Product>();
@@ -21,17 +21,17 @@ public class ProductRepository {
 
 
     public Product save (Product product) {
-        product.setId(count++);
+        product.setId((long) count++);
         products.add(product);
         return product.builder()
                     .id(product.getId())
-                    .name(product.getName())
-                    .price(product.getPrice())
+                    .title(product.getTitle())
+                    .cost(product.getCost())
                     .build();
     }
 
     public  Product edit(Product product) {
-        return products.set(product.getId(), product);
+        return products.set(Math.toIntExact(product.getId()), product);
     }
 
     public Optional<Product> findById(Integer id) {

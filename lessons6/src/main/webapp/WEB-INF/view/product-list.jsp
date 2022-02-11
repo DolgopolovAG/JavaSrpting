@@ -21,9 +21,11 @@
             <br>
             Product id: ${product.id}
             <br>
-            Product name: ${product.name}
+            Product name: ${product.title}
             <br>
-            Product price: ${product.price}
+            Product cost: ${product.cost}
+            <br>
+            Product date: ${product.date}
             <br>
         </li>
     </c:forEach>
