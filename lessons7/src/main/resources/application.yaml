@@ -1,0 +1,9 @@
+spring.mvc.view:
+  prefix: '/WEB-INF/view/'
+  suffix: '.jsp'
+
+hibernate.properties:
+  driverClassName: 'org.postgresql.Driver'
+  url: 'jdbc:postgresql://10.3.0.182:5432/gb_shop'
+  username: 'gb_shop'
+  password: 'gb_shop'
