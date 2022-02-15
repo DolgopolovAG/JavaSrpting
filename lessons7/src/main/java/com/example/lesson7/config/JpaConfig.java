@@ -2,10 +2,16 @@ package com.example.lesson7.config;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -24,32 +30,22 @@ import java.util.Properties;
 @Configuration
 @ComponentScan("com.example")
 @EnableTransactionManagement
-@ConfigurationProperties("hibernate.properties")
-@Getter
-@Setter
+@EnableJpaRepositories(basePackages = "com.example.lesson7.model")
+@EnableJpaAuditing(auditorAwareRef = "auditorAwareBean")
 public class JpaConfig {
 
-    private String driverClassName;
-    private String url;
-    private String username;
-    private String password;
+   @Autowired
+   private Environment env;
 
-    @Bean
-    public DataSource dataSource() {
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-
-        try {
-            Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName(driverClassName);
-            dataSource.setDriverClass(driver);
-            dataSource.setUrl(url);
-            dataSource.setUsername(username);
-            dataSource.setPassword(password);
-            return dataSource;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+   @Bean
+   public DataSource dataSource(){
+       DriverManagerDataSource dataSource = new DriverManagerDataSource();
+       dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
+       dataSource.setUrl(env.getProperty("spring.datasource.url"));
+       dataSource.setUsername(env.getProperty("spring.datasource.username"));
+       dataSource.setPassword(env.getProperty("spring.datasource.password"));
+       return dataSource;
+   };
 
     @Bean
     public PlatformTransactionManager transactionManager() throws IOException {
@@ -59,7 +55,7 @@ public class JpaConfig {
     @Bean
     public EntityManagerFactory entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        factoryBean.setPackagesToScan("com.example");
+        factoryBean.setPackagesToScan("com.example.lesson7.entity");
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.setJpaProperties(hibernateProperties());

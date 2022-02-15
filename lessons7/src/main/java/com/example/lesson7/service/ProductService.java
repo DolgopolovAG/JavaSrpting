@@ -1,8 +1,9 @@
 package com.example.lesson7.service;
 
 import com.example.lesson7.repository.JpaProductRepository;
-import com.example.lesson7.model.Product;
+import com.example.lesson7.entity.Product;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,8 +30,12 @@ public class ProductService {
         return productEntity.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public List<Product> findAll() {
-        return productEntity.findAll();
+    public List<Product> findAll(Sort sort) {
+        if (sort == null) {
+            return productEntity.findAll();
+        }
+        else
+            return productEntity.findAll(sort);
     }
 
     public  void deleteById(Long id) {
