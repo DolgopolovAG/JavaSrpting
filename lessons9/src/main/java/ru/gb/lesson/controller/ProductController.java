@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     @GetMapping("/cart/add")
-    public String deleteСartById(@RequestParam(name = "id") Long id) {
+    public String addСartById(@RequestParam(name = "id") Long id) {
         Cart cart = getCurrentCart();
         Product product = productService.findById(id);
         cart.addProduct(product);
