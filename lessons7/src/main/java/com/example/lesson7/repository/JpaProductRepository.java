@@ -1,7 +1,9 @@
 package com.example.lesson7.repository;
 
-import com.example.lesson7.model.Product;
+import com.example.lesson7.entity.Product;
 import com.example.lesson7.model.ProductDao;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,61 +13,61 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class JpaProductRepository implements ProductDao {
+@RequiredArgsConstructor
+public class JpaProductRepository  {
 
-    @PersistenceContext
-    private  EntityManager entityManager;
+    private final ProductDao productDao;
 
-    @Override
     @Transactional(readOnly = true)
     public List<Product> findAll() {
-        return entityManager.createQuery("select p from Product p").getResultList();
+        return productDao.findAll();
     }
 
-    @Override
+    @Transactional(readOnly = true)
+    public List<Product> findAll(Sort sort) {
+        return productDao.findAll(sort);
+    }
+
     @Transactional(readOnly = true)
     public Optional<Product> findById(Long id) {
-        return Optional.of( entityManager.createNamedQuery("Product.findById", Product.class)
-                .setParameter("id", id).getSingleResult());
+        return productDao.findById(id);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public String findNameById(Long id) {
-        return entityManager.createNamedQuery("Product.findNameById", String.class)
-                .setParameter("id", id).getSingleResult();
-    }
-
-
-    @Transactional
-    @Override
-    public Product save(Product product) {
-        if (product.getId() == null){
-            entityManager.persist(product);
-        } else {
-            entityManager.merge(product);
+        Product p = findById(id).orElse(null);
+        if (p != null){
+            return p.getTitle();
         }
-        return product;
+        else {
+            return "";
+        }
     }
 
-    @Transactional
-    @Override
-    public Product insert(Product product) {
-        entityManager.persist(product);
-        return product;
-    }
 
     @Transactional
-    @Override
-    public Product update(Product product) {
-        entityManager.merge(product);
-        return product;
+    public Product save(Product product) {
+      Product curr_product = findById(product.getId()).get();
+      product = Product.builder()
+               .id(product.getId())
+               .title(product.getTitle())
+               .cost(product.getCost())
+               .date(product.getDate())
+               .manuf_Id(product.getManuf_Id())
+               .version(curr_product.getVersion())
+               .createBy(curr_product.getCreateBy())
+               .createDate(curr_product.getCreateDate())
+               .lastModifiedBy(curr_product.getLastModifiedBy())
+               .lastModifiedDate(curr_product.getLastModifiedDate())
+               .build();
+        product = productDao.save(product);
+       return product;
     }
 
+
     @Transactional
-    @Override
     public void deleteById(Long id) {
         Product product = findById(id).get();
-        entityManager.remove(product);
+        productDao.delete(product);
     }
 }

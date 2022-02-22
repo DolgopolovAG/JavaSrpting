@@ -1,9 +1,9 @@
 package com.example.lesson7.controller;
 
-//import com.example.lesson4_boot.config.ProductProps;
-import com.example.lesson7.model.Product;
+import com.example.lesson7.entity.Product;
 import com.example.lesson7.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,11 +51,15 @@ public class MyController {
         return "product";
     }
 
-    // показать все элементы
+    // показать все элементы @RequestParam(name = "direction", defaultValue = "desc", required = false)
     @GetMapping(path = "/all")
-    public String getAllProduct(Model model){
-        System.out.println("all");
-        List<Product> all = productService.findAll();
+    public String getAllProduct(Model model,
+                                @RequestParam(name = "direction", required = false) String direction){
+        System.out.println("all "+ direction.toUpperCase());
+        Sort sort = (direction.toUpperCase().equals("DESC") ?Sort.by(Sort.Direction.DESC,"id")
+                        :(direction.toUpperCase().equals("ASC") ?Sort.by(Sort.Direction.ASC,"id")
+                                :null));
+        List<Product> all = productService.findAll(sort);
         model.addAttribute("products", all);
 
         return "product-list";
@@ -77,24 +81,6 @@ public class MyController {
         return "create-product";
     }
 
-/*    @ResponseBody
-    @GetMapping
-    public String helloMess() {
-        return  "Hello";
-    }
-*/
-   @GetMapping("/hello")
-    public String helloMess1(Model model) {
-        throw new RuntimeException("rqfff " );
-       // model.addAttribute("msg", "Hello M " + productProps.getProducts().size());
-        //return "product";
-    }
-
-    @GetMapping("/hello_new")
-    public String helloMess(Model model) {
-        model.addAttribute("msg", "Hello M ");
-        return "product";
-    }
 
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -103,4 +89,5 @@ public class MyController {
         return  "Error!!! message: " + e.getMessage() + "\\r\\n" + e.getStackTrace();
     }
 
+    // @PathVariable Integer id)
 }

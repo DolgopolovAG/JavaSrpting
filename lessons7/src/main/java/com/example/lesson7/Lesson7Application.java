@@ -14,6 +14,10 @@ public class Lesson7Application {
         ConfigurableApplicationContext run = SpringApplication.run(Lesson7Application.class, args);
 //        ProductService entityManager = run.getBean(ProductService.class);
 //        System.out.println(entityManager.findAll());
+
+//         ProductDaoo prod = run.getBean(ProductDaoo.class);
+//         //System.out.println(prod.findAll());
+//        System.out.println(prod.findById(1L));
     }
 
 }
