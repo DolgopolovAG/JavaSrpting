@@ -1,5 +1,6 @@
 package ru.gb.lesson.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,7 @@ public class Cart {
 
     private String status = "not empty";
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinTable(name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),
@@ -35,6 +37,10 @@ public class Cart {
         if (products.contains(product))
             return products.remove(product);
         return false;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
     public void clearProduct() {
