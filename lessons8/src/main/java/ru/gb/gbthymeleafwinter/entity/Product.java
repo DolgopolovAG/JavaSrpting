@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import ru.gb.gbthymeleafwinter.entity.enums.Status;
 
 
@@ -31,6 +32,7 @@ public class Product {
     private String title;
     private BigDecimal cost;
     @Column(name = "manufacture_date")
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate date;
 
     @Enumerated(EnumType.STRING)
@@ -53,6 +55,11 @@ public class Product {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    @ManyToMany
+    @JoinTable(name = "cart_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id"))
+    private Set<Cart> carts;
 
     @Override
     public String toString() {
