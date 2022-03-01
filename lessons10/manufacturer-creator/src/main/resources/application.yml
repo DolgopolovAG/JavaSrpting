@@ -1,0 +1,11 @@
+
+
+spring.datasource:
+  url: 'jdbc:postgresql://10.3.0.182:5432/gb_shop'
+  username: 'gb_shop'
+  password: 'gb_shop'
+  driver-class-name: 'org.postgresql.Driver'
+
+server:
+  port: 8734
+
