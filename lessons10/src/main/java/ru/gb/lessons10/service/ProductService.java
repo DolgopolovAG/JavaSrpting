@@ -56,7 +56,7 @@ public class ProductService {
         try {
             productDao.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-         //  log.error("There isn't product with id {}", id);
+           log.error("There isn't product with id {}", id);
         }
 
     }

@@ -27,7 +27,7 @@ public class ManufacturerApiRestTemplate implements ManufacturerApi {
 
     @Override
     public ManufacturerDto create() {
-       /// log.error("through RestTemplate");
+        log.error("through RestTemplate");
         return restTemplate.getForObject(URI.create(URL), ManufacturerDto.class);
     }
 }
