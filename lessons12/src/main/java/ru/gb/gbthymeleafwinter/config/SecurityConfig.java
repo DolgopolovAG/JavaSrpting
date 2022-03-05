@@ -27,13 +27,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     requests.mvcMatchers(HttpMethod.GET, "/product/{productId}").permitAll();
                     requests.antMatchers("/product/all").permitAll();
                     requests.antMatchers("/logininfo").permitAll();
-                    requests.antMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
+                    //requests.antMatchers(HttpMethod.POST, "/product").hasRole("ADMIN");
                 }
         );
 
         http.authorizeRequests((requests) -> {
             ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)requests.anyRequest()).authenticated();
         });
+        http.exceptionHandling().accessDeniedPage("/errors/access-denied");
         http.formLogin();
         http.httpBasic();
     }

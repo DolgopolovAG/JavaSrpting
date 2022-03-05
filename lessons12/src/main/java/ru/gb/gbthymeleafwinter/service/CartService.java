@@ -8,8 +8,10 @@ import ru.gb.gbthymeleafwinter.dao.CartDao;
 import ru.gb.gbthymeleafwinter.entity.Cart;
 import ru.gb.gbthymeleafwinter.entity.Product;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,5 @@ public class CartService {
     public List<Cart> findAll() {
         return cartDao.findAll();
     }
-
-
 
 }
